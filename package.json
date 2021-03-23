@@ -1,6 +1,7 @@
 {
   "name": "esbuild-plugin-filelastmodified",
   "version": "1.0.0",
+  "repository": "https://github.com/g45t345rt/esbuild-plugin-filelastmodified",
   "description": "A esbuild plugin to replace __fileLastModified__ with the actual time the file has been modified.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
