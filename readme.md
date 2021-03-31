@@ -37,7 +37,7 @@ dayjs.extend(localizedFormat)
 const lastModified = __fileLastModified__ // <-- this gets replaced by the plugin as unix date time
 
 export default () => {
-  return <div>{dayjs(lastModified).format('LLL')</div>
+  return <div>{dayjs(lastModified).format('LLL')}</div>
 }
 ```
 
