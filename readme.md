@@ -1,9 +1,9 @@
 # esbuild-plugin-filelastmodified
 
-A esbuild plugin to replace `__fileLastModified__` with the actual time the file has been modified.
+A esbuild plugin to replace `__fileLastModified__` with the date the file was last modified.
 
 ## Why
-Avoid having to manually change the the last time the file was modified everytime you make an edit.
+Avoid having to manually hardcode the date and change it every time you make an edit on your website pages. It's very usefull for displaying -> `Modified date: 2021-03-31` at the end of web pages.
 
 ## Install
 
@@ -11,7 +11,7 @@ Avoid having to manually change the the last time the file was modified everytim
 npm install esbuild-plugin-filelastmodified
 ```
 
-## Usage
+## Apply plugin to esbuild
 
 ```js
 import esbuild from 'esbuild'
@@ -25,6 +25,23 @@ esbuild.build({
 })
 ```
 
+## How I would actually use it in React
+
+```js
+// Home.js
+import React from 'react'
+import dayjs from 'dayjs'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+dayjs.extend(localizedFormat)
+
+const lastModified = __fileLastModified__ // <-- this gets replaced by the plugin as unix date time
+
+export default () => {
+  return <div>{dayjs(lastModified).format('LLL')</div>
+}
+```
+
+### Conversion
 #### Before
 ```js
 const fileLastModified = __fileLastModified__
