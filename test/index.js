@@ -1,6 +1,6 @@
 const { build } = require('esbuild')
 const { assert } = require('chai')
-const fileLastModified = require('../dist').default
+const fileLastModified = require('../dist')
 
 const test = (name, config) => {
   return build({

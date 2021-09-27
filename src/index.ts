@@ -1,30 +1,45 @@
-import { Plugin, Loader } from 'esbuild'
+import { Plugin, OnResolveArgs, OnLoadArgs, OnResolveResult, OnLoadResult } from 'esbuild'
 import fs from 'fs'
 
-// https://github.com/jamestalmage/node-modules-regexp/blob/master/index.js
-const nodeModules = new RegExp(/^(?:.*[\\\/])?node_modules(?:[\\\/].*)?$/)
+const LOAD_NAMESPACE = 'load_filelastmodified_namespace'
 
-interface FileLastModifiedOptions {
+interface PluginOptions {
   identifier?: string
 }
 
-export default (opts?: FileLastModifiedOptions): Plugin => {
-  const { identifier = '__fileLastModified__' } = opts || {}
+const onResolve = (identifier) => async (args: OnResolveArgs): Promise<OnResolveResult> => {
   const find = new RegExp(identifier, 'g')
+  const source = (await fs.promises.readFile(args.path)).toString('utf-8')
+
+  if (!source.match(find)) return args
+
+  return {
+    path: args.path,
+    namespace: LOAD_NAMESPACE,
+    pluginData: { source, find }
+  }
+}
+
+const onLoad = (args: OnLoadArgs): OnLoadResult => {
+  const { pluginData } = args
+  const { source, find } = pluginData
+
+  const stats = fs.statSync(args.path) // get file information -> last time it was modified
+  const contents = source.replace(find, stats.mtimeMs.toString()) // replace the identifier with file last modified
+  return { contents }
+}
+
+const plugin = (options?: PluginOptions): Plugin => {
+  const { identifier = '__fileLastModified__' } = options || {}
+
   return {
     name: 'esbuild-plugin-filelastmodified',
     setup(build) {
-      build.onLoad({ filter: /.*/ }, ({ path: filePath }) => {
-        if (!filePath.match(nodeModules)) { // skip/do not process node_modules files
-          let data = fs.readFileSync(filePath, 'utf8')
-          if (data.match(find)) { // make sure identifier is present
-            const stats = fs.statSync(filePath) // get file information -> last time it was modified
-            const ext = filePath.split('.').pop() // get file extension js,ts,jsx,tsx,...
-            data = data.replace(find, stats.mtimeMs.toString()) // replace the identifier with file last modified
-            return { contents: data, loader: ext as Loader }
-          }
-        }
-      })
+      build.onResolve({ filter: /.*/ }, onResolve(identifier))
+      build.onLoad({ filter: /.*/, namespace: LOAD_NAMESPACE }, onLoad)
     }
   }
 }
+
+export default plugin
+module.exports = plugin
