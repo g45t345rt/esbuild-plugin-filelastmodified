@@ -1,5 +1,6 @@
 import { Plugin, OnResolveArgs, OnLoadArgs, OnResolveResult, OnLoadResult } from 'esbuild'
 import fs from 'fs'
+import path from 'path'
 
 const LOAD_NAMESPACE = 'load_filelastmodified_namespace'
 
@@ -9,6 +10,7 @@ interface PluginOptions {
 
 const onResolve = (identifier) => async (args: OnResolveArgs): Promise<OnResolveResult> => {
   const find = new RegExp(identifier, 'g')
+  if (!args.path.startsWith('.')) return
   const source = (await fs.promises.readFile(args.path)).toString('utf-8')
 
   if (!source.match(find)) return

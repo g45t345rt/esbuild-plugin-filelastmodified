@@ -28,8 +28,8 @@ describe('fileLastModified esbuild tests', () => {
     }).catch(done)
   })
 
-  it('Works with no token', (done) => {
-    test('nothing').then((res) => {
+  it('Works with other imports', (done) => {
+    test('other_imports').then((res) => {
       assert(res)
       done()
     }).catch(done)
