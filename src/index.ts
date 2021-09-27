@@ -11,7 +11,7 @@ const onResolve = (identifier) => async (args: OnResolveArgs): Promise<OnResolve
   const find = new RegExp(identifier, 'g')
   const source = (await fs.promises.readFile(args.path)).toString('utf-8')
 
-  if (!source.match(find)) return args
+  if (!source.match(find)) return
 
   return {
     path: args.path,
