@@ -22,7 +22,7 @@ describe('fileLastModified esbuild tests', () => {
   })
 
   it('Works with another identifier', (done) => {
-    test('identifier', { identifier: '__FILE_LAST_MODIFIED__' }).then((res) => {
+    test('identifier', { identifier: /__FILE_LAST_MODIFIED__/ }).then((res) => {
       assert(res)
       done()
     }).catch(done)

@@ -1,2 +1,2 @@
-const fileLastModified = __fileLastModified__
+import fileLastModified from '__fileLastModified__'
 console.log(fileLastModified)
