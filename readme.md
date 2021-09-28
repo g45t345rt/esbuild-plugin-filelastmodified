@@ -46,13 +46,13 @@ export default () => {
 #### Before
 
 ```js
-const fileLastModified = __fileLastModified__
+import lastModified from '__fileLastModified__'
 ```
 
 #### After
 
 ```js
-const fileLastModified = 16165180636939285e-4 // unix date time
+const lastModified = 16165180636939285e-4 // unix date time
 ```
 
 ### Options
