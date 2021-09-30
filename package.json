@@ -1,18 +1,23 @@
 {
   "name": "esbuild-plugin-filelastmodified",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A esbuild plugin to import the last time the file has been modified.",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "main": "./dist",
+  "browser": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "npm run build && cd test && mocha 'index.js' --no-timeout --exit",
-    "dev": "node build.js",
-    "build": "cross-env NODE_ENV=production && node build.js"
+    "test": "cd test && mocha 'index.js' --no-timeout --exit",
+    "build": "ts-node bundle.ts && tsc --emitDeclarationOnly --outDir dist",
+    "prepublish": "npm run build"
   },
   "repository": "https://github.com/g45t345rt/esbuild-plugin-filelastmodified",
   "readme": "https://github.com/g45t345rt/esbuild-plugin-filelastmodified#readme",
   "author": "g45t345rt",
   "license": "ISC",
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "^16.10.1",
     "chai": "^4.3.4",
@@ -20,6 +25,7 @@
     "esbuild": "^0.13.2",
     "mocha": "^9.1.2",
     "normalize.css": "^8.0.1",
+    "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
   }
 }

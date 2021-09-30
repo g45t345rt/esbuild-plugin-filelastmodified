@@ -1,6 +1,8 @@
 import { Plugin, OnLoadArgs, OnLoadResult, OnResolveArgs, OnResolveResult, PluginBuild } from 'esbuild'
 import fs from 'fs'
 
+import './declare'
+
 const PLUGIN_NAMESPACE = 'fileLastModified'
 
 interface PluginOptions {
@@ -35,5 +37,4 @@ const plugin = (options?: PluginOptions): Plugin => {
   }
 }
 
-export default plugin
-module.exports = plugin
+export = plugin
